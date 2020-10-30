@@ -7,3 +7,4 @@
 # For Project
 .idea
 node_modules
+dist
