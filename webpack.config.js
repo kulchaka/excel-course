@@ -1,7 +1,5 @@
 const path = require('path');
-const {
-    CleanWebpackPlugin
-} = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -11,10 +9,23 @@ const isDev = !isProd;
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
 
+const jsLoaders = () => {
+    const loaders = {
+        loader: "babel-loader",
+        options: {
+            presets: ['@babel/preset-env']
+        }
+    }
+    // if (isDev) {
+    //     loaders.push('eslint-loader')
+    // }
+    return loaders
+}
+
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
-    entry: './index.js',
+    entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: filename('js'),
         path: path.resolve(__dirname, 'dist')
@@ -27,6 +38,10 @@ module.exports = {
         }
     },
     devtool: isDev ? 'source-map' : false,
+    devServer: {
+        port: 3000,
+        hot: isDev
+    },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
@@ -49,8 +64,13 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.s[ac]ss$/i,
-                use: [
-                    MiniCssExtractPlugin.loader,
+                use: [{
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            hmr: isDev,
+                            reloadAll: true
+                        }
+                    },
                     'css-loader',
                     'sass-loader',
                 ],
@@ -58,12 +78,7 @@ module.exports = {
             {
                 test: /\.m?js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                use: jsLoaders()
             }
         ],
     },
