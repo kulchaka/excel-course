@@ -4,13 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <title>Pure JavaScript Excel Application</title>
   </head>
   <body>
-    <h1>Pure JavaScript Excel Application</h1>
     <div id="app" class="container"></div>
     <div class="excel">
-      <div class="excel__header"></div>
+      <div class="excel__header">
+        <input class="input" type="text" placeholder="New sheet" />
+        <div>
+          <div class="button">
+            <span class="material-icons"> exit_to_app </span>
+          </div>
+          <div class="button">
+            <span class="material-icons"> delete_forever </span>
+          </div>
+        </div>
+      </div>
       <div class="excel__toolbar"></div>
       <div class="excel__formula"></div>
       <div class="excel__table"></div>
